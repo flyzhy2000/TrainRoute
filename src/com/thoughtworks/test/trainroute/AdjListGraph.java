@@ -20,12 +20,15 @@ public class AdjListGraph implements DirectedGraph{
 	
 	
 	private Map<Node, List<AdjEdge>> adjMap;
-	private Set<Node> nodeSet;
+//	private Set<Node> nodeSet;
 	private Map<String, Node> nodeMap;
 	
-	public AdjListGraph(Map<String, Node> nodeMap, Map<Node, List<AdjEdge>> adjancentNodesMap) {
+	public AdjListGraph(Set<Node> nodeSet, Map<Node, List<AdjEdge>> adjancentNodesMap) {
 		this.adjMap = adjancentNodesMap;
-		this.nodeMap = nodeMap;
+		this.nodeMap = new HashMap<String, Node>();
+		for (Node n : nodeSet) {
+			this.nodeMap.put(n.name, n);
+		}
 	}
 	
 	@Override
@@ -119,7 +122,7 @@ public class AdjListGraph implements DirectedGraph{
 		}
 		
 		int distance = edgeDistance(start, end);
-		boolean found = (distance > 0) && (distance <= maxDistance);
+		boolean found = (distance > 0) && (distance < maxDistance);
 		
 		int num = 0;
 		for (AdjEdge edge : adjMap.get(start)) {
