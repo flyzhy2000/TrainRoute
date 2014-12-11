@@ -20,6 +20,7 @@ public class AdjListGraph implements DirectedGraph{
 	
 	
 	private Map<Node, List<AdjEdge>> adjMap;
+	private Set<Node> nodeSet;
 	private Map<String, Node> nodeMap;
 	
 	public AdjListGraph(Map<String, Node> nodeMap, Map<Node, List<AdjEdge>> adjancentNodesMap) {
@@ -131,21 +132,47 @@ public class AdjListGraph implements DirectedGraph{
 	// use dijkstra algorithm to calculate the shortest distance from "start" to "end"
 	@Override
 	public int shortestDistance(Node start, Node end) {  
-		Set<Node> foundSet = new HashSet<Node>();     // nodes whose shortest distance to "start" are already found
-		foundSet.add(start);   // init
+		Set<Node> fixedSet = new HashSet<Node>();     // nodes whose shortest distance to "start" are already fixed
 		
 		Map<Node, Integer> distanceToNodes = new HashMap<Node, Integer>();   // pair of <B, 5> means it's a distance of 5 from "start" to B
 		for (AdjEdge edge : adjMap.get(start)) {   // init
  			distanceToNodes.put(edge.node, edge.weight);
 		}
-		
-		while(foundSet.size() < nodeMap.size()) {
-			Node n = nearestNode(distanceToNodes));
-		}
-		for (AdjEdge edge : adjMap.get(start)) {
+				
+		while(fixedSet.size() < nodeMap.size()) {
+			Node n = nearestUnfixedNode(distanceToNodes, fixedSet);
+			if (n.equals(end)) {
+				break;     // found
+			}
+			fixedSet.add(n);
+			
+			// update distance map if there's a shorter route found
+			int d = distanceToNodes.get(n);
+			List<AdjEdge> edgesOfNearest = adjMap.get(n);
+			for (AdjEdge e : edgesOfNearest) {
+				if (!distanceToNodes.containsKey(e.node)
+					|| (d + e.weight < distanceToNodes.get(e.node)) ) {
+					distanceToNodes.put(e.node, d + e.weight);
+				}
+			}
 			
 		}
-		return 0;
+		
+		return distanceToNodes.get(end);
+	}
+	
+	private Node nearestUnfixedNode(Map<Node, Integer> distanceToNodes, Set<Node> fixedSet) {
+		Node nearestNode = null;
+		int smallestDistance = 65535;
+		
+		for (Node n : distanceToNodes.keySet()) {
+			if (!fixedSet.contains(n) && distanceToNodes.get(n) < smallestDistance) {
+				smallestDistance = distanceToNodes.get(n);
+				nearestNode = n;
+			}
+		} 
+		
+		return nearestNode;
 	}
 
 }

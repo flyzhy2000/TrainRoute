@@ -27,7 +27,31 @@ public class Main {
 		
 		routeNumberQuestion2();
 		
+		shortestRouteQuestion();
+		
+		shortestRouteQuestion2();
+		
 		routeNumbereQuestion3();
+	}
+
+	private static void shortestRouteQuestion2() {
+
+		DirectedGraph g = RouteGraphFactory.getInstance().create(sNodes, sEdges);
+				
+		int distance = g.shortestDistance(g.getNodeByName("C"), g.getNodeByName("C"));
+		System.out.println("Output #9: " + distance);
+
+				
+	}
+
+	private static void shortestRouteQuestion() {
+
+		DirectedGraph g = RouteGraphFactory.getInstance().create(sNodes, sEdges);
+				
+		int distance = g.shortestDistance(g.getNodeByName("A"), g.getNodeByName("C"));
+		System.out.println("Output #8: " + distance);
+
+		
 	}
 
 	private static void distanceQuestion(int questionNO, String[] routeNodes) {
@@ -69,7 +93,7 @@ public class Main {
 		DirectedGraph g = RouteGraphFactory.getInstance().create(sNodes, sEdges);
 				
 		int routeNum = g.numOfRouteWithMaxDistance(g.getNodeByName("C"), g.getNodeByName("C"), 30);
-		System.out.println("Output #9: " + routeNum);
+		System.out.println("Output #10: " + routeNum);
 		
 	}
 
