@@ -1,9 +1,10 @@
 package com.thoughtworks.test.trainroute;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-
-import com.thoughtworks.test.trainroute.DirectedGraph.Node;
+import java.util.Set;
 
 public class AdjListGraph implements DirectedGraph{
 
@@ -127,10 +128,20 @@ public class AdjListGraph implements DirectedGraph{
 		return (found)? (num+1) : num;
 	}
 
+	// use dijkstra algorithm to calculate the shortest distance from "start" to "end"
 	@Override
-	public int shortestDistance(Node start, Node end) {
-		// dijkstra algorithm 
+	public int shortestDistance(Node start, Node end) {  
+		Set<Node> foundSet = new HashSet<Node>();     // nodes whose shortest distance to "start" are already found
+		foundSet.add(start);   // init
 		
+		Map<Node, Integer> distanceToNodes = new HashMap<Node, Integer>();   // pair of <B, 5> means it's a distance of 5 from "start" to B
+		for (AdjEdge edge : adjMap.get(start)) {   // init
+ 			distanceToNodes.put(edge.node, edge.weight);
+		}
+		
+		while(foundSet.size() < nodeMap.size()) {
+			Node n = nearestNode(distanceToNodes));
+		}
 		for (AdjEdge edge : adjMap.get(start)) {
 			
 		}
